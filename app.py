@@ -5,7 +5,8 @@ from flask_migrate import Migrate
 from flask_cors import CORS   
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
-from models import db, User
+from models import db, User, Shopping, Order, Product, Category
+
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,6 +17,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
 app.config["JWT_SECRET_KEY"] = "super_jwt_key"
+
 
 CORS(app)
 db.init_app(app)
@@ -91,5 +93,24 @@ def user():
     }), 200
 
 
+@app.route("/product", methods=["POST"])
+def add_product():
+    product = Product()
+    product.name = request.json.get("name")
+    product.price = request.json.get("price")
+    product.description = request.json.get("description")
+
+    db.session.add(product)
+    db.session.commit()
+    return "creado"
+
+
+@app.route("/products", methods=["GET"])
+def get_products():
+    products = Product.query.all()
+    all_products= list(map(lambda product: product.serialize(), products))
+    return jsonify(all_products)
+    
+
 if __name__ == "__main__":
-    app.run(port=8080, host="localhost")
+    app.run(host="localhost", port=8080)
