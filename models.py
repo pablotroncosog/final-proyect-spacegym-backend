@@ -76,7 +76,7 @@ class Delete_Product (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    categories = db.Column(db.Integer, nullable=True)
+    categorie = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(150), nullable=False)
 
 class Edit-Product (db.Model):
@@ -84,5 +84,14 @@ class Edit-Product (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    categories = db.Column(db.Integer, nullable=True)
+    categorie = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(150), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "price": self.price,
+            "caterorie": self.categorie,
+            "description": self.description
+        }
