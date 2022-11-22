@@ -68,3 +68,21 @@ class Category (db.Model):
     combat = db.Column(db.Boolean, nullable=False)
     yoga = db.Column(db.Boolean, nullable=False)
     genera_sport = db.Column(db.Boolean, nullable=False)
+
+
+
+class Delete_Product (db.Model):
+    __tablename__= "delete_products"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    categories = db.Column(db.Integer, nullable=True)
+    description = db.Column(db.String(150), nullable=False)
+
+class Edit-Product (db.Model):
+    __tablename__= "edit_products"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    categories = db.Column(db.Integer, nullable=True)
+    description = db.Column(db.String(150), nullable=False)
