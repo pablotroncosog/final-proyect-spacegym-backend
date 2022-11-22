@@ -79,7 +79,7 @@ class Delete_Product (db.Model):
     categorie = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(150), nullable=False)
 
-class Edit-Product (db.Model):
+class Edit_Product (db.Model):
     __tablename__= "edit_products"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
