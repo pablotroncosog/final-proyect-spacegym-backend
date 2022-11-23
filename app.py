@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS   
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
-from models import db, User, Shopping, Order, Product, Category, Delete_Product, Edit_Product 
+from models import db, User, Shopping, Order, Product, Category, 
 
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
