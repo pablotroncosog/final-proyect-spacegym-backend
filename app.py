@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS   
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
-from models import db, User, Shopping, Order, Product, Category, 
+from models import db, User, Shopping, Order, Product, Category
 
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
@@ -110,7 +110,18 @@ def get_products():
     products = Product.query.all()
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
+
+
+@app.route("/category", methods=["POST"])
+def get_category():
+    category = request.json.get("name")
+
     
+  
+
+
+
+
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
