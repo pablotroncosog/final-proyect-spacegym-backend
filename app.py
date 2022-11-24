@@ -114,10 +114,10 @@ def get_products():
 
 @app.route("/category", methods=["POST"])
 def get_category():
-    category.name = request.json.get("name")
+    category = request.json.get("name")
 
-    print(name)
-
+    
+  
 
 
 
