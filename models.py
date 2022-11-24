@@ -51,6 +51,7 @@ class Product(db.Model):
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(150), nullable=False)
+    image = db.Column(db.Integer,nullable=False)
     category_id = db.Column(db.Integer,db.ForeignKey(
         "categories.id"),nullable=False)
        
