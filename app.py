@@ -99,6 +99,7 @@ def add_product():
     product.name = request.json.get("name")
     product.price = request.json.get("price")
     product.description = request.json.get("description")
+    product.category = request.json.get ("category")
 
     db.session.add(product)
     db.session.commit()
@@ -111,10 +112,12 @@ def get_products():
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
 
-
-@app.route("/category", methods=["POST"])
+@app.route("/category", methods=["GET"])
 def get_category():
-    category = request.json.get("name")
+    category = Category.query.all()
+    all_category = list(map(lambda category: product.serialize(), product))
+    return jsonify(all_category)
+
 
     
   
