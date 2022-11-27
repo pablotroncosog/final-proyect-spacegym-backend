@@ -112,17 +112,12 @@ def get_products():
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
 
+
 @app.route("/category", methods=["GET"])
 def get_category():
     category = Category.query.all()
     all_category = list(map(lambda category: category.serialize(), category))
     return jsonify(all_category)
-
-
-    
-  
-
-
 
 
 
