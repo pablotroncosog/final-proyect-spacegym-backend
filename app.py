@@ -137,11 +137,24 @@ def get_products():
     return jsonify(all_products)
 
 
+@app.route("/category", methods=["POST"])
+def add_category():
+    category.gimnasia = request.json.get("gimnasia")
+    category.combate = request.json.get("combate")
+    category.yoga = request.json.get("yoga")
+
+    db.session.add(category)
+    db.session.commit()
+    return "creado"
+
+
+
 @app.route("/category", methods=["GET"])
 def get_category():
     category = Category.query.all()
     all_category = list(map(lambda category: category.serialize(), category))
     return jsonify(all_category)
+
 
 
 
