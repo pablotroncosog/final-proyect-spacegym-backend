@@ -110,7 +110,7 @@ def get_products():
     products = Product.query.all()
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
-    
+
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
