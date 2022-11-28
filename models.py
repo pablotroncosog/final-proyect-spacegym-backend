@@ -51,20 +51,29 @@ class Product(db.Model):
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(150), nullable=False)
+    image = db.Column(db.Integer,nullable=False)
+    category_id = db.Column(db.Integer,db.ForeignKey(
+        "categories.id"),nullable=False)
+       
+
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "price": self.price,
-            "description": self.description
+            "description": self.description,
+            "category": {
+                "id":self.category.id,
+                "name":self.category.name
+            }
         }
 
 
 class Category (db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
-    gym = db.Column(db.Boolean, nullable=False)
-    combat = db.Column(db.Boolean, nullable=False)
-    yoga = db.Column(db.Boolean, nullable=False)
-    genera_sport = db.Column(db.Boolean, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    product = db.relationship("product")
+
+
