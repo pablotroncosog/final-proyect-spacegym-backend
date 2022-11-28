@@ -143,10 +143,7 @@ def add_category():
     category.combate = request.json.get("combate")
     category.yoga = request.json.get("yoga")
 
-
-    db.session.add(category)
-    db.session.commit()
-    return "creado"
+  
 
 
 
