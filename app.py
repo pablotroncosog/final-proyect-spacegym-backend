@@ -9,12 +9,12 @@ from werkzeug.utils import secure_filename
 from models import db, User, Shopping, Order, Product, Category
 
 
+
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__) #instancia de flask  
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + \
-     os.path.join(BASEDIR, "auth.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASEDIR, "auth.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False     
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
@@ -139,12 +139,14 @@ def get_products():
 
 @app.route("/category", methods=["POST"])
 def add_category():
-    category.gimnasia = request.json.get("gimnasia")
-    category.combate = request.json.get("combate")
-    category.yoga = request.json.get("yoga")
-
+    category = Category()
+    category.name = request.json.get("name")
   
 
+    
+    db.session.add(category)
+    db.session.commit()
+    return "Categoria Creada"
 
 
 @app.route("/category", methods=["GET"])
@@ -152,7 +154,6 @@ def get_category():
     category = Category.query.all()
     all_category = list(map(lambda category: category.serialize(), category))
     return jsonify(all_category)
-
 
 
 
