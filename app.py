@@ -5,10 +5,12 @@ from flask_migrate import Migrate
 from flask_cors import CORS   
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from werkzeug.utils import secure_filename
 from models import db, User, Shopping, Order, Product, Category
 
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__) #instancia de flask  
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + \
@@ -17,6 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
 app.config["JWT_SECRET_KEY"] = "super_jwt_key"
+app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")#directorio de imagenes
 
 
 CORS(app)
@@ -25,10 +28,29 @@ Migrate(app, db)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 
 @app.route("/")
 def home():
     return "Hello Flask"
+
+@app.route("/upload_image", methods=["POST"])
+def upload_image():
+    if "file" not in request.files:
+        print(request.files)
+        return jsonify({"msg": "No file in request"}) 
+    file = request.files["file"] 
+    if file.filename == "":
+        return jsonify({"msg": "No file selected"})            
+    filename = secure_filename(file.filename)
+    print(filename)
+    file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+    return jsonify({"msg": "File saved"})      
+
 
 @app.route("/users")
 #@jwt_required()
