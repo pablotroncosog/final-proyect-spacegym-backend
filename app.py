@@ -9,12 +9,12 @@ from werkzeug.utils import secure_filename
 from models import db, User, Shopping, Order, Product, Category
 
 
+
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__) #instancia de flask  
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + \
-     os.path.join(BASEDIR, "auth.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASEDIR, "auth.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False     
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
@@ -123,7 +123,7 @@ def add_product():
     product.name = request.json.get("name")
     product.price = request.json.get("price")
     product.description = request.json.get("description")
-    product.category = request.json.get ("category")
+   
 
     db.session.add(product)
     db.session.commit()
@@ -137,5 +137,28 @@ def get_products():
     return jsonify(all_products)
 
 
+<<<<<<< HEAD
+=======
+@app.route("/category", methods=["POST"])
+def add_category():
+    category = Category()
+    category.name = request.json.get("name")
+    category.product_id =request.json.get("product_id")
+
+    
+    db.session.add(category)
+    db.session.commit()
+    return "Categoria Creada"
+
+
+@app.route("/category", methods=["GET"])
+def get_category():
+    category = Category.query.all()
+    all_category = list(map(lambda category: category.serialize(), category))
+    return jsonify(all_category)
+
+
+
+>>>>>>> 685d10cafdf670b7670694574e64b5cb425ebdbe
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
