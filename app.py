@@ -123,7 +123,7 @@ def add_product():
     product.name = request.json.get("name")
     product.price = request.json.get("price")
     product.description = request.json.get("description")
-    product.category = request.json.get ("category")
+   
 
     db.session.add(product)
     db.session.commit()
@@ -141,7 +141,7 @@ def get_products():
 def add_category():
     category = Category()
     category.name = request.json.get("name")
-  
+    category.product_id =request.json.get("product_id")
 
     
     db.session.add(category)
