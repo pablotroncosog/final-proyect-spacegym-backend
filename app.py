@@ -93,7 +93,7 @@ def user():
     email = request.json.get("email")
     name = request.json.get("name")
 
-    found_user = User.query.filter_by(email=email).first()
+    found_user = user.query.filter_by(email=email).first()
     print(found_user)
     if found_user is not None:
         return jsonify({
@@ -111,7 +111,7 @@ def user():
 
     return jsonify({
         "msg": "success creating user", 
-        "data": user.serialize()
+        "data": found_user.serialize()
     }), 200
 
 
