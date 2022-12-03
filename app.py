@@ -137,6 +137,8 @@ def get_products():
     return jsonify(all_products)
 
 
+<<<<<<< HEAD
+=======
 @app.route("/category", methods=["POST"])
 def add_category():
     category = Category()
@@ -157,5 +159,6 @@ def get_category():
 
 
 
+>>>>>>> 685d10cafdf670b7670694574e64b5cb425ebdbe
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
