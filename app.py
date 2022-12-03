@@ -141,7 +141,7 @@ def get_products():
 def add_category():
     category = Category()
     category.name = request.json.get("name")
-    category.product_id =request.json.get("product_id")
+   
 
     
     db.session.add(category)

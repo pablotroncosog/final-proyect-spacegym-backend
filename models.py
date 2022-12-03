@@ -52,6 +52,7 @@ class Product(db.Model):
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(150), nullable=False)
     category = db.relationship("Category")
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     
 
     def serialize(self):
@@ -71,7 +72,6 @@ class Category (db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
     
 
 
