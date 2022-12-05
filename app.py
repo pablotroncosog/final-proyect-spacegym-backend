@@ -123,6 +123,7 @@ def add_product():
     product.name = request.json.get("name")
     product.price = request.json.get("price")
     product.description = request.json.get("description")
+    product.category_id = request.json.get("category_id")
    
 
     db.session.add(product)
