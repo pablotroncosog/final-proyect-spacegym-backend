@@ -137,7 +137,6 @@ def get_products():
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
 
-
 @app.route("/category", methods=["POST"])
 def add_category():
     category = Category()
