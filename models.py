@@ -55,6 +55,7 @@ class Product(db.Model):
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(150), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id") )
     category = db.relationship("Category")
     order_id = Column(Integer, ForeignKey("orders.id"))
 
@@ -74,7 +75,6 @@ class Category (db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey("product.id"))
     
 
 

@@ -123,6 +123,7 @@ def add_product():
     product.name = request.json.get("name")
     product.price = request.json.get("price")
     product.description = request.json.get("description")
+    product.category_id = request.json.get("category_id")
    
 
     db.session.add(product)
@@ -136,14 +137,11 @@ def get_products():
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
 
-
-<<<<<<< HEAD
-=======
 @app.route("/category", methods=["POST"])
 def add_category():
     category = Category()
     category.name = request.json.get("name")
-    category.product_id =request.json.get("product_id")
+   
 
     
     db.session.add(category)
@@ -159,6 +157,5 @@ def get_category():
 
 
 
->>>>>>> 685d10cafdf670b7670694574e64b5cb425ebdbe
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
