@@ -67,4 +67,12 @@ class Category (db.Model):
     name = db.Column(db.String, nullable=False)
     
 
+    def serialize(self):
+        return {
+            "category": {
+                "id":self.id,
+                "name":self.name
+            }
+        }
+
 
