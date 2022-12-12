@@ -6,15 +6,8 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    lastname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-    state = db.Column(db.String(50), nullable=False)
-    province = db.Column(db.String(50), nullable=False)
-    street = db.Column(db.String(50), nullable=False)
-    birthday = db.Column(db.Date, nullable=False)
-    gender = db.Column(db.String(50), nullable=False)
-    role = db.Column(db.Boolean, nullable=False)
     shopping = db.relationship("Shopping")
 
 
@@ -25,10 +18,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "lastname": self.lastname,
             "email": self.email,
-            "password": self.password,
-            "state": self.state
         }
 
 
@@ -38,16 +28,12 @@ class Shopping(db.Model):
     price = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False)
     status = db.Column(db.String(50), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    order = db.relationship ("Order", backref = "Shopping", uselist = False)
+    
 
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
-    shopping_id  = db.Column(db.Integer, ForeignKey("users.id")) 
-    product = db.relationship("Product")
-
 
 class Product(db.Model):
     __tablename__ = "product"
@@ -57,7 +43,6 @@ class Product(db.Model):
     description = db.Column(db.String(150), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id") )
     category = db.relationship("Category")
-    order_id = Column(Integer, ForeignKey("orders.id"))
 
     def serialize(self):
         return {

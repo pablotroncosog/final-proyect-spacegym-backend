@@ -47,6 +47,8 @@ def users():
         "data": all_users
     })
 
+
+
 @app.route("/upload_image", methods=["POST"])
 def upload_image():
     if "file" not in request.files:
@@ -58,8 +60,6 @@ def upload_image():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
         return "File saved"
-
-
 
 
 
@@ -141,9 +141,7 @@ def get_products():
 def add_category():
     category = Category()
     category.name = request.json.get("name")
-   
-
-    
+       
     db.session.add(category)
     db.session.commit()
     return "Categoria Creada"
