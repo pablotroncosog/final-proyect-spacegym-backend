@@ -19,11 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
 app.config["JWT_SECRET_KEY"] = "super_jwt_key"
-<<<<<<< HEAD
 app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")#directorio de imagenes
-=======
-app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")
->>>>>>> 461487a79a4cf582731f134e83dda0bcd0a48522
 
 
 CORS(app)
@@ -69,21 +65,6 @@ def users():
     return jsonify({
         "data": all_users
     })
-
-@app.route("/upload_image", methods=["POST"])
-def upload_image():
-    if "file" not in request.files:
-        return "No file in request"
-    file = request.files["file"]
-    if file.filename == "":
-        return "No file selected or file without name"
-    if  file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-        return "File saved"
-
-
-
 
 
 @app.route("/login", methods=["POST"])
@@ -145,13 +126,9 @@ def add_product():
     product = Product()
     product.name = request.json.get("name")
     product.price = request.json.get("price")
-<<<<<<< HEAD
-    product.description = request.json.get("despucription")
-=======
     product.description = request.json.get("description")
     product.category_id = request.json.get("category_id")
    
->>>>>>> 461487a79a4cf582731f134e83dda0bcd0a48522
 
     db.session.add(product)
     db.session.commit()
