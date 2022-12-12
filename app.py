@@ -19,7 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
 app.config["JWT_SECRET_KEY"] = "super_jwt_key"
-app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")
+app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")#directorio de imagenes
 
 
 CORS(app)
@@ -27,6 +27,11 @@ db.init_app(app)
 Migrate(app, db)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 
 def allowed_file(filename):
@@ -38,6 +43,20 @@ def allowed_file(filename):
 def home():
     return "Hello Flask"
 
+@app.route("/upload_image", methods=["POST"])
+def upload_image():
+    if "file" not in request.files:
+        print(request.files)
+        return jsonify({"msg": "No file in request"}) 
+    file = request.files["file"] 
+    if file.filename == "":
+        return jsonify({"msg": "No file selected"})            
+    filename = secure_filename(file.filename)
+    print(filename)
+    file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+    return jsonify({"msg": "File saved"})      
+
+
 @app.route("/users")
 #@jwt_required()
 def users():
@@ -46,21 +65,6 @@ def users():
     return jsonify({
         "data": all_users
     })
-
-@app.route("/upload_image", methods=["POST"])
-def upload_image():
-    if "file" not in request.files:
-        return "No file in request"
-    file = request.files["file"]
-    if file.filename == "":
-        return "No file selected or file without name"
-    if  file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-        return "File saved"
-
-
-
 
 
 @app.route("/login", methods=["POST"])
@@ -95,7 +99,7 @@ def user():
     email = request.json.get("email")
     name = request.json.get("name")
 
-    found_user = User.query.filter_by(email=email).first()
+    found_user = user.query.filter_by(email=email).first()
     print(found_user)
     if found_user is not None:
         return jsonify({
@@ -113,7 +117,7 @@ def user():
 
     return jsonify({
         "msg": "success creating user", 
-        "data": user.serialize()
+        "data": found_user.serialize()
     }), 200
 
 
