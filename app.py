@@ -155,11 +155,20 @@ def add_shopping():
     return "Compra creada"
 
 
+@app.route("/product/<category>", methods=["GET"])
+def get_products_by_category(category):
+    products = Product.query.filter(Product.category_id == category )
+    all_products= list(map(lambda product: product.serialize(), products))
+    return jsonify(all_products)
+
+
+
 @app.route("/category", methods=["POST"])
 def add_category():
     category = Category()
     category.name = request.json.get("name")
-       
+   
+    
     db.session.add(category)
     db.session.commit()
     return "Categoria Creada"

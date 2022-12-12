@@ -8,8 +8,8 @@ class User(db.Model):
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-
-
+  
+ 
 
     def __repr__(self):
         return"<User %r>" % self.name
@@ -18,9 +18,11 @@ class User(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "email": self.email
-            # "password": self.password
-           
+
+            "email": self.email,
+            "password": self.password,
+        
+
         }
 
 
@@ -47,7 +49,6 @@ class Product(db.Model):
     description = db.Column(db.String(150), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id") )
     category = db.relationship("Category")
-  
 
     def serialize(self):
         return {
@@ -66,5 +67,13 @@ class Category (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     
+
+    def serialize(self):
+        return {
+            "category": {
+                "id":self.id,
+                "name":self.name
+            }
+        }
 
 
