@@ -6,15 +6,9 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
-    lastname = db.Column(db.String(50))
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-    state = db.Column(db.String(50) )
-    province = db.Column(db.String(50))
-    street = db.Column(db.String(50) )
-    birthday = db.Column(db.Date)
-    gender = db.Column(db.String(50))
-    role = db.Column(db.Boolean)
+ 
 
 
     def __repr__(self):
