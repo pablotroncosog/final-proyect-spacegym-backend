@@ -8,7 +8,17 @@ class User(db.Model):
     name = db.Column(db.String(200))
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
+<<<<<<< HEAD
  
+=======
+    state = db.Column(db.String(50), nullable=False)
+    province = db.Column(db.String(50), nullable=False)
+    street = db.Column(db.String(50), nullable=False)
+    birthday = db.Column(db.Date, nullable=False)
+    gender = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.Boolean, nullable=False)
+    shopping = db.relationship("Shopping")
+>>>>>>> 461487a79a4cf582731f134e83dda0bcd0a48522
 
 
     def __repr__(self):
@@ -30,12 +40,15 @@ class Shopping(db.Model):
     price = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False)
     status = db.Column(db.String(50), nullable=False)
-
+    user_id = Column(Integer, ForeignKey("users.id"))
+    order = db.relationship ("Order", backref = "Shopping", uselist = False)
 
 class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
+    shopping_id  = db.Column(db.Integer, ForeignKey("users.id")) 
+    product = db.relationship("Product")
 
 
 class Product(db.Model):
@@ -44,20 +57,26 @@ class Product(db.Model):
     name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(150), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id") )
+    category = db.relationship("Category")
+    order_id = Column(Integer, ForeignKey("orders.id"))
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "price": self.price,
-            "description": self.description
+            "description": self.description,
+            "category": {
+                "id":self.category.id,
+                "name":self.category.name
+            }
         }
-
 
 class Category (db.Model):
     __tablename__ = "categories"
     id = db.Column(db.Integer, primary_key=True)
-    gym = db.Column(db.Boolean, nullable=False)
-    combat = db.Column(db.Boolean, nullable=False)
-    yoga = db.Column(db.Boolean, nullable=False)
-    genera_sport = db.Column(db.Boolean, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    
+
+

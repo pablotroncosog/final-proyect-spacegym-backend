@@ -1,6 +1,6 @@
 import os    
-from flask import Flask, jsonify, request   
-from flask_sqlalchemy import SQLAlchemy  
+from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate 
 from flask_cors import CORS   
 from flask_bcrypt import Bcrypt 
@@ -9,17 +9,21 @@ from werkzeug.utils import secure_filename
 from models import db, User, Shopping, Order, Product, Category
 
 
+
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__) #instancia de flask  
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + \
-     os.path.join(BASEDIR, "auth.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASEDIR, "auth.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False     
 app.config["ENV"] = "development"
 app.config["SECRET_KEY"] = "super_secret_key"
 app.config["JWT_SECRET_KEY"] = "super_jwt_key"
+<<<<<<< HEAD
 app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")#directorio de imagenes
+=======
+app.config["UPLOAD_FOLDER"] = os.path.join(BASEDIR, "images")
+>>>>>>> 461487a79a4cf582731f134e83dda0bcd0a48522
 
 
 CORS(app)
@@ -32,6 +36,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route("/")
@@ -60,6 +69,22 @@ def users():
     return jsonify({
         "data": all_users
     })
+
+@app.route("/upload_image", methods=["POST"])
+def upload_image():
+    if "file" not in request.files:
+        return "No file in request"
+    file = request.files["file"]
+    if file.filename == "":
+        return "No file selected or file without name"
+    if  file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        return "File saved"
+
+
+
+
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -120,7 +145,13 @@ def add_product():
     product = Product()
     product.name = request.json.get("name")
     product.price = request.json.get("price")
+<<<<<<< HEAD
     product.description = request.json.get("despucription")
+=======
+    product.description = request.json.get("description")
+    product.category_id = request.json.get("category_id")
+   
+>>>>>>> 461487a79a4cf582731f134e83dda0bcd0a48522
 
     db.session.add(product)
     db.session.commit()
@@ -132,7 +163,26 @@ def get_products():
     products = Product.query.all()
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
+
+@app.route("/category", methods=["POST"])
+def add_category():
+    category = Category()
+    category.name = request.json.get("name")
+   
+
     
+    db.session.add(category)
+    db.session.commit()
+    return "Categoria Creada"
+
+
+@app.route("/category", methods=["GET"])
+def get_category():
+    category = Category.query.all()
+    all_category = list(map(lambda category: category.serialize(), category))
+    return jsonify(all_category)
+
+
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)
