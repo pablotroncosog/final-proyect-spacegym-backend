@@ -67,24 +67,6 @@ def users():
     })
 
 
-<<<<<<< HEAD
-
-@app.route("/upload_image", methods=["POST"])
-def upload_image():
-    if "file" not in request.files:
-        return "No file in request"
-    file = request.files["file"]
-    if file.filename == "":
-        return "No file selected or file without name"
-    if  file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-        return "File saved"
-
-
-
-=======
->>>>>>> f83e2fc566562d992b6d8b33e89e2886a0465006
 @app.route("/login", methods=["POST"])
 def login():
     password = request.json.get("password")
@@ -158,6 +140,20 @@ def get_products():
     products = Product.query.all()
     all_products= list(map(lambda product: product.serialize(), products))
     return jsonify(all_products)
+
+
+@app.route("/shopping", methods=["POST"])
+def add_shopping():
+    shopping = shopping()
+    shopping.order = request.json.get("order")
+    shopping.price = request.json.get("price")
+    shopping.date = request.json.get("date")
+    shopping.status = request.json.get("status")
+       
+    db.session.add(shopping)
+    db.session.commit()
+    return "Compra creada"
+
 
 @app.route("/category", methods=["POST"])
 def add_category():
