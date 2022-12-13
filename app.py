@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from werkzeug.utils import secure_filename
-from models import db, User, Shopping, Product, Category
+from models import db, User, Sale, Shopping, Product, Category
 
 
 
@@ -32,12 +32,9 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route("/")
 def home():
@@ -56,7 +53,6 @@ def upload_image():
     file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
     return jsonify({"msg": "File saved"})      
 
-
 @app.route("/users")
 #@jwt_required()
 def users():
@@ -65,32 +61,6 @@ def users():
     return jsonify({
         "data": all_users
     })
-
-
-@app.route("/login", methods=["POST"])
-def login():
-    password = request.json.get("password")
-    email = request.json.get("email")
-
-    found_user = User.query.filter_by(email=email).first()
-
-    if found_user is None:
-        return jsonify({
-            "msg":"user not found please create user"
-        }), 404
-        
-    if bcrypt.check_password_hash(found_user.password, password):
-        access_token = create_access_token(identity=email)
-        return jsonify({
-            "access_token": access_token,
-            "data": found_user.serialize(),
-            "success": True
-        }), 200 
-    else:
-        return jsonify({
-            "msg": "password is invalid"
-        })        
-
 
 @app.route("/user", methods=["POST"])
 def user():
@@ -120,6 +90,30 @@ def user():
         "data": user.serialize()
     }), 200
 
+
+@app.route("/login", methods=["POST"])
+def login():
+    password = request.json.get("password")
+    email = request.json.get("email")
+
+    found_user = User.query.filter_by(email=email).first()
+
+    if found_user is None:
+        return jsonify({
+            "msg":"user not found please create user"
+        }), 404
+        
+    if bcrypt.check_password_hash(found_user.password, password):
+        access_token = create_access_token(identity=email)
+        return jsonify({
+            "access_token": access_token,
+            "data": found_user.serialize(),
+            "success": True
+        }), 200 
+    else:
+        return jsonify({
+            "msg": "password is invalid"
+        })        
 
 @app.route("/product", methods=["POST"])
 def add_product():
@@ -154,6 +148,18 @@ def add_shopping():
     db.session.commit()
     return "Compra creada"
 
+@app.route("/sale", methods=["POST"])
+def add_sale():
+    sale = Sale()
+    sale.product_name = request.json.get("product_name")
+    sale.date = request.json.get("date")
+    sale.price = request.json.get("price")
+    sale.status = request.json.get("status")
+       
+    db.session.add(sale)
+    db.session.commit()
+    return "Compra creada"
+
 
 @app.route("/product/<category>", methods=["GET"])
 def get_products_by_category(category):
@@ -162,13 +168,11 @@ def get_products_by_category(category):
     return jsonify(all_products)
 
 
-
 @app.route("/category", methods=["POST"])
 def add_category():
     category = Category()
     category.name = request.json.get("name")
-   
-    
+
     db.session.add(category)
     db.session.commit()
     return "Categoria Creada"
@@ -179,8 +183,6 @@ def get_category():
     category = Category.query.all()
     all_category = list(map(lambda category: category.serialize(), category))
     return jsonify(all_category)
-
-
 
 if __name__ == "__main__":
     app.run(host="localhost", port=8080)

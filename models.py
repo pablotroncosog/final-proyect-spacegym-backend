@@ -65,9 +65,7 @@ class Product(db.Model):
     description = db.Column(db.String(150), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     category = db.relationship("Category")
-    category = db.relationship("Category")
-    user = db.relationship("User")
-
+    
     def serialize(self):
         return {
             "id": self.id,
