@@ -100,7 +100,7 @@ def user():
     name = request.json.get("name")
 
     found_user = user.query.filter_by(email=email).first()
-    print(found_user)
+    
     if found_user is not None:
         return jsonify({
             "msg":"Email is already in use"
@@ -117,7 +117,7 @@ def user():
 
     return jsonify({
         "msg": "success creating user", 
-        "data": found_user.serialize()
+        "data": user.serialize()
     }), 200
 
 
