@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt 
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from werkzeug.utils import secure_filename
-from models import db, User, Shopping, Order, Product, Category
+from models import db, User, Shopping, Product, Category
 
 
 

@@ -28,6 +28,8 @@ class Shopping(db.Model):
     price = db.Column(db.Integer, nullable=False)
     date = db.Column(db.String(50), nullable=False)
     status = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User")
 
     def serialize(self):
         return {
@@ -35,14 +37,24 @@ class Shopping(db.Model):
             "order": self.order,
             "price": self.price,
             "date": self.date,
-            "status":self.status
+            "status": self.status,
+            "user": {self.user.id
+                     }
         }
 
 
-class Order(db.Model):
-    __tablename__ = "orders"
+class Sale(db.Model):
+    __tablename__ = "sales"
     id = db.Column(db.Integer, primary_key=True)
-    quantity = db.Column(db.Integer, nullable=False)
+    product_name = db.Column(db.String(50), nullable=False)
+    date = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User")
+
+
+user = db.relationship("User")
 
 
 class Product(db.Model):
@@ -53,6 +65,8 @@ class Product(db.Model):
     description = db.Column(db.String(150), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     category = db.relationship("Category")
+    category = db.relationship("Category")
+    user = db.relationship("User")
 
     def serialize(self):
         return {
@@ -60,10 +74,11 @@ class Product(db.Model):
             "name": self.name,
             "price": self.price,
             "description": self.description,
-            "category": {
-                "id": self.category.id,
-                "name": self.category.name
-            }
+            "description": self.description,
+            "id": self.category.id,
+            "name": self.category.name,
+            "user": {self.user.id
+                     }
         }
 
 
