@@ -144,7 +144,7 @@ def get_products():
 
 @app.route("/shopping", methods=["POST"])
 def add_shopping():
-    shopping = shopping()
+    shopping = Shopping()
     shopping.order = request.json.get("order")
     shopping.price = request.json.get("price")
     shopping.date = request.json.get("date")
