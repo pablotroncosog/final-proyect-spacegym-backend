@@ -73,9 +73,7 @@ class Product(db.Model):
             "price": self.price,
             "description": self.description,
             "id": self.category.id,
-            "name": self.category.name,
-            "user": {self.user.id
-                     }
+            "name": self.category.name
         }
 
 
